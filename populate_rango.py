@@ -49,7 +49,6 @@ def populate():
             add_page(c, p['title'], p['url'])
 
     for c in Category.objects.all():
-        c = add_cat(cat)
         for p in Page.objects.filter(category=c):
             print(f'- {c}: {p}')
 
