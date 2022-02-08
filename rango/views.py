@@ -10,6 +10,7 @@ def index(request):
     context_dict = {}
     category_list = Category.objects.order_by('-likes')[:5]
     popular_list = Page.objects.order_by('-views')[:5]
+
     context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
     context_dict['categories'] = category_list
     context_dict['popular'] = popular_list
@@ -17,8 +18,7 @@ def index(request):
 
 
 def about(request):
-    context_dict = {'MEDIA_URL': '/media/'}
-    return render(request, 'rango/about.html', context=context_dict)
+    return render(request, 'rango/about.html')
 
 
 def show_category(request, category_name_slug):
@@ -49,7 +49,7 @@ def add_category(request):
 def add_page(request, category_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
-    except Category.DoesNotExist:
+    except:
         category = None
 
     if category is None:
@@ -66,10 +66,10 @@ def add_page(request, category_name_slug):
                 page.category = category
                 page.views = 0
                 page.save()
-                return redirect(reverse('rango:show_category',
-                                        kwargs={'category_name_slug': category_name_slug}))
+
+                return redirect(reverse('rango:show_category', kwargs={'category_name_slug': category_name_slug}))
         else:
-            print(form.errors)
+            print(form.errors)  # This could be better done; for the purposes of TwD, this is fine. DM.
 
     context_dict = {'form': form, 'category': category}
     return render(request, 'rango/add_page.html', context=context_dict)
