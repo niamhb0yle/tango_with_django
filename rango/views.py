@@ -18,7 +18,9 @@ def index(request):
 
 
 def about(request):
-    return render(request, 'rango/about.html')
+    print(request.method)
+    print(request.user)
+    return render(request, 'rango/about.html', {})
 
 
 def show_category(request, category_name_slug):
